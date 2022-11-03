@@ -16,24 +16,11 @@ jobs:
         env:
           GITHUB_PR_TITLE: ${{ github.event.pull_request.title }}
         run: echo 'NOTION_TASK_ID=$( bash .github/scripts/get-notion-task-id-from-title.sh "${{ env.GITHUB_PR_TITLE }}" )' >> $GITHUB_ENV
-      - name: DEBUG
-        run: |
-          echo ${{ env.NOTION_TASK_ID }}
-          echo ${{ env.NOTION_TASK_ID }}
       - name: Update Notion Page GitHub URL
         env:
           GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
         if: env.NOTION_TASK_ID != ''
-        run: |
-          curl --location -X PATCH 'https://api.notion.com/v1/pages/${{ env.NOTION_TASK_ID }}' \
-          --header 'Notion-Version: 2022-06-28' \
-          --header 'Content-Type: application/json' \
-          --header 'Authorization: Bearer ${{ secrets.NOTION_API_SECRET }}' \
-          --data-raw '{
-            "properties": {
-              "GitHub URL": { "url": "${{ env.GITHUB_PR_URL  }}" }
-            }
-          }'
+        run: bash .github/scripts/update-notion-task-github-url.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "${{ env.GITHUB_PR_URL }}"
       - name: Comment On Notion Page
         env:
           GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
@@ -55,3 +42,7 @@ jobs:
               }
             ]
           }'
+      - name: DEBUG
+        run: |
+          echo ${{ env.NOTION_TASK_ID }}
+          echo ${{ env.NOTION_TASK_ID }}
