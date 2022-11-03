@@ -19,10 +19,6 @@ jobs:
           ssh-key: ${{ secrets.WORKFLOWS_DEPLOY_KEY }}
           path: .github/haoworkflows
 
-      - name: DEBUG 1
-        run: |
-          echo $( ls .github/haoworkflows )
-
       # use composite actions
       - id: notion-task-id
         uses: ./.github/haoworkflows/get-notion-task-id-from-title
