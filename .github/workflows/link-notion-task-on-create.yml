@@ -25,7 +25,7 @@ jobs:
 
       # use composite actions
       - id: notion-task-id
-        uses: .github/haoworkflows/get-notion-task-id-from-title
+        uses: .github/haoworkflows/get-notion-task-id-from-title@master
         with:
           pr-title: ${{ github.event.pull_request.title }}
 
