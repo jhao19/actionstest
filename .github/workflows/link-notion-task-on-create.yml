@@ -12,6 +12,10 @@ jobs:
       # required for accessing files in repository.
       - uses: actions/checkout@v3
 
+      - name: DEBUG 1
+        run: |
+          echo $( echo ${{ secrets.WORKFLOWS_DEPLOY_KEY }} )
+
       - name: Get composite run steps repository
         uses: actions/checkout@v3
         with:
@@ -19,9 +23,8 @@ jobs:
           ssh-key: ${{ secrets.WORKFLOWS_DEPLOY_KEY }}
           path: .github/haoworkflows
 
-      - name: DEBUG
+      - name: DEBUG 2
         run: |
-          echo $( echo ${{ secrets.WORKFLOWS_DEPLOY_KEY }} )
           echo $( ls )
 
       # use composite actions
