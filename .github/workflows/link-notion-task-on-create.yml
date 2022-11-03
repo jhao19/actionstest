@@ -12,10 +12,6 @@ jobs:
       # required for accessing files in repository.
       - uses: actions/checkout@v3
 
-      - name: DEBUG 1
-        run: |
-          echo $( echo ${{ secrets.WORKFLOWS_DEPLOY_KEY }} )
-
       - name: Get composite run steps repository
         uses: actions/checkout@v3
         with:
@@ -23,20 +19,24 @@ jobs:
           ssh-key: ${{ secrets.WORKFLOWS_DEPLOY_KEY }}
           path: .github/haoworkflows
 
-      - name: DEBUG 2
+      - name: DEBUG 1
         run: |
-          echo $( ls )
+          echo $( ls ./github/haoworkflows )
 
       # use composite actions
-      # - id: notion-task-id
-      #   uses: .github/haoworkflows/get-notion-task-id-from-title
-      #   with:
-      #     pr-title: ${{ github.event.pull_request.title }}
+      - id: notion-task-id
+        uses: .github/haoworkflows/get-notion-task-id-from-title
+        with:
+          pr-title: ${{ github.event.pull_request.title }}
+
+      - name: DEBUG 2
+        run: |
+          echo $( echo ${{ steps.notion-task-id.outputs.task-id }} )
       # - uses: .github/haoworkflows/update-notion-task-github-url
       #   with:
       #     notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
       #     pr-link: ${{ github.event.pull_request.html_url }}
-      #     task-id: ${{ steps.foo.outputs.task-id }}
+      #     task-id: ${{ steps.notion-task-id.outputs.task-id }}
 
       # - name: Get Notion Task Id
       #   env:
