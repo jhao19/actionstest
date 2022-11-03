@@ -1,10 +1,10 @@
 name: Link Notion Task On New Pull Request
 run-name: ${{ github.actor }} created a new PR
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
+  - pull_request
+    # types:
+    #   - opened
+    #   - reopened
 jobs:
   Link-Notion-Task:
     runs-on: ubuntu-latest
