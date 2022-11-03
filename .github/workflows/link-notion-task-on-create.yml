@@ -12,17 +12,23 @@ jobs:
       # required for accessing files in repository.
       - uses: actions/checkout@v3
 
+      - name: Get composite run steps repository
+        uses: actions/checkout@v3
+        with:
+          repository: jhao19/haoworkflows
+          ssh-key: ${{ secrets.WORKFLOWS_DEPLOY_KEY }}
+          path: .github/haoworkflows
+
       # use composite actions
       - id: notion-task-id
-        uses: jhao19/haoworkflows/get-notion-task-id-from-title@master
+        uses: .github/haoworkflows/get-notion-task-id-from-title@master
         with:
           pr-title: ${{ github.event.pull_request.title }}
-      - uses: jhao19/haoworkflows/update-notion-task-github-url@master
+      - uses: .github/haoworkflows/update-notion-task-github-url@master
         with:
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           pr-link: ${{ github.event.pull_request.html_url }}
           task-id: ${{ steps.foo.outputs.task-id }}
-
 
       # - name: Get Notion Task Id
       #   env:
