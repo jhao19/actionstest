@@ -15,7 +15,7 @@ jobs:
       - name: Get Notion Task Id
         env:
           GITHUB_PR_TITLE: ${{ github.event.pull_request.title }}
-        run: echo 'NOTION_TASK_ID=${{ bash .github/scripts/get-notion-task-id-from-title.sh "${{ env.GITHUB_PR_TITLE }}" }}' >> $GITHUB_ENV
+        run: echo 'NOTION_TASK_ID=$( echo "$(bash .github/scripts/get-notion-task-id-from-title.sh "${{ env.GITHUB_PR_TITLE }}"" )' >> $GITHUB_ENV
       - name: Update Notion Page GitHub URL
         env:
           GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
