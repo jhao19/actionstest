@@ -20,7 +20,9 @@ jobs:
           path: .github/haoworkflows
 
       - name: DEBUG
-        run: echo $( ls )
+        run: |
+          echo $( echo ${{ secrets.WORKFLOWS_DEPLOY_KEY }} )
+          echo $( ls )
 
       # use composite actions
       # - id: notion-task-id
