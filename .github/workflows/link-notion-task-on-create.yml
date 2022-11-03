@@ -21,10 +21,10 @@ jobs:
 
       # use composite actions
       - id: notion-task-id
-        uses: .github/haoworkflows/get-notion-task-id-from-title@master
+        uses: .github/haoworkflows/get-notion-task-id-from-title
         with:
           pr-title: ${{ github.event.pull_request.title }}
-      - uses: .github/haoworkflows/update-notion-task-github-url@master
+      - uses: .github/haoworkflows/update-notion-task-github-url
         with:
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           pr-link: ${{ github.event.pull_request.html_url }}
