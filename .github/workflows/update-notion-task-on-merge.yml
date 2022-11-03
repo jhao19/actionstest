@@ -14,7 +14,7 @@ jobs:
       - name: Debug
         run: |
           echo "IS_MERGED=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUT
-          echo "HEAD_REF=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          echo "HEAD_REF=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
       - name: Get Notion Task Id
         env:
           GITHUB_PR_TITLE: ${{ github.event.pull_request.title }}
