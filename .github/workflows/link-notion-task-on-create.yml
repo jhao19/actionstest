@@ -37,9 +37,6 @@ jobs:
           message: "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}"
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           page-id: ${{ steps.notion-task-id.outputs.task-id }}
-        run: |
-          comment=$( echo "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}" )
-          bash .github/scripts/post-notion-task-comment.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "$comment"
 
       # - name: Get Notion Task Id
       #   env:
