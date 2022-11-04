@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/haoworkflows/get-notion-task-id-from-title
         with:
           pr-title: ${{ github.event.pull_request.title }}
-      - uses: .github/haoworkflows/update-notion-task-github-url
+      - uses: ./.github/haoworkflows/update-notion-task-github-url
         with:
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           pr-link: ${{ github.event.pull_request.html_url }}
