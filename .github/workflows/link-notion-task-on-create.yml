@@ -34,7 +34,7 @@ jobs:
       - name: Comment On Notion Page
         uses: ./.github/haoworkflows/post-notion-task-comment
         with:
-          message: "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}"
+          message: $( echo "New pull request for task opened:" ${{ env.GITHUB_PR_URL  }}" )
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           page-id: ${{ steps.notion-task-id.outputs.task-id }}
 
