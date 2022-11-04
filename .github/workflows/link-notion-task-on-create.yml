@@ -20,15 +20,26 @@ jobs:
           path: .github/haoworkflows
 
       # use composite actions
-      - id: notion-task-id
+      - name: Get Notion Task Id
+        id: notion-task-id
         uses: ./.github/haoworkflows/get-notion-task-id-from-title
         with:
           pr-title: ${{ github.event.pull_request.title }}
-      - uses: ./.github/haoworkflows/update-notion-task-github-url
+      - name: Update Notion Page GitHub URL
+        uses: ./.github/haoworkflows/update-notion-task-github-url
         with:
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           pr-link: ${{ github.event.pull_request.html_url }}
           task-id: ${{ steps.notion-task-id.outputs.task-id }}
+      - name: Comment On Notion Page
+        uses: ./.github/haoworkflows/update-notion-task-github-url
+        with:
+          message: "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}"
+          notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
+          page-id: ${{ steps.notion-task-id.outputs.task-id }}
+        run: |
+          comment=$( echo "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}" )
+          bash .github/scripts/post-notion-task-comment.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "$comment"
 
       # - name: Get Notion Task Id
       #   env:
@@ -41,10 +52,10 @@ jobs:
       #     GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
       #   if: env.NOTION_TASK_ID != ''
       #   run: bash .github/scripts/update-notion-task-github-url.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "${{ env.GITHUB_PR_URL }}"
-      - name: Comment On Notion Page
-        env:
-          GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
-        if: env.NOTION_TASK_ID != ''
-        run: |
-          comment=$( echo "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}" )
-          bash .github/scripts/post-notion-task-comment.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "$comment"
+      # - name: Comment On Notion Page
+      #   env:
+      #     GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
+      #   if: env.NOTION_TASK_ID != ''
+      #   run: |
+      #     comment=$( echo "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}" )
+      #     bash .github/scripts/post-notion-task-comment.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "$comment"
