@@ -1,10 +1,9 @@
 name: Link Notion Task On New Pull Request
 run-name: ${{ github.actor }} created a new PR
 on:
-  - pull_request
-    # types:
-    #   - opened
-    #   - reopened
+  pull_request:
+    types:
+      - opened
 jobs:
   Link-Notion-Task:
     runs-on: ubuntu-latest
@@ -37,22 +36,3 @@ jobs:
           message: "New pull request for task opened: ${{ github.event.pull_request.html_url }}"
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           page-id: ${{ steps.notion-task-id.outputs.task-id }}
-
-      # - name: Get Notion Task Id
-      #   env:
-      #     GITHUB_PR_TITLE: ${{ github.event.pull_request.title }}
-      #   run: |
-      #     notion_task_id=$( bash .github/scripts/get-notion-task-id-from-title.sh "${{ env.GITHUB_PR_TITLE }}" )
-      #     echo "NOTION_TASK_ID=$( echo $notion_task_id )" >> $GITHUB_ENV
-      # - name: Update Notion Page GitHub URL
-      #   env:
-      #     GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
-      #   if: env.NOTION_TASK_ID != ''
-      #   run: bash .github/scripts/update-notion-task-github-url.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "${{ env.GITHUB_PR_URL }}"
-      # - name: Comment On Notion Page
-      #   env:
-      #     GITHUB_PR_URL: ${{ github.event.pull_request.html_url }}
-      #   if: env.NOTION_TASK_ID != ''
-      #   run: |
-      #     comment=$( echo "New pull request for task opened: ${{ env.GITHUB_PR_URL  }}" )
-      #     bash .github/scripts/post-notion-task-comment.sh "${{ env.NOTION_TASK_ID }}" "${{ secrets.NOTION_API_SECRET }}" "$comment"
