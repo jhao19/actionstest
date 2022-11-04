@@ -29,6 +29,7 @@ jobs:
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           pr-link: ${{ github.event.pull_request.html_url }}
           task-id: ${{ steps.notion-task-id.outputs.task-id }}
+        secrets: inherit
 
       # - name: Get Notion Task Id
       #   env:
