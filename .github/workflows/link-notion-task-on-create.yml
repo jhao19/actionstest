@@ -25,6 +25,9 @@ jobs:
         uses: ./.github/haoworkflows/get-notion-task-id-from-title
         with:
           pr-title: ${{ github.event.pull_request.title }}
+
+      - name: DEBUG
+        run: echo $( echo ${{ steps.notion-task-id.outputs.task-id }})
       - name: Update Notion Page GitHub URL
         if: steps.notion-task-id.outputs.task-id != ''
         uses: ./.github/haoworkflows/update-notion-task-github-url
