@@ -25,12 +25,14 @@ jobs:
         with:
           pr-title: ${{ github.event.pull_request.title }}
       - name: Update Notion Page GitHub URL
+        if: steps.notion-task-id.outputs.task-id != ''
         uses: ./.github/haoworkflows/update-notion-task-github-url
         with:
           notion-api-secret: ${{ secrets.NOTION_API_SECRET }}
           pr-link: ${{ github.event.pull_request.html_url }}
           task-id: ${{ steps.notion-task-id.outputs.task-id }}
       - name: Comment On Notion Page
+        if: steps.notion-task-id.outputs.task-id != ''
         uses: ./.github/haoworkflows/post-notion-task-comment
         with:
           message: "New pull request for task opened: ${{ github.event.pull_request.html_url }}"
