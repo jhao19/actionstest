@@ -4,6 +4,7 @@ on:
   pull_request:
     types:
       - opened
+      - reopened
 jobs:
   Link-Notion-Task:
     runs-on: ubuntu-latest
