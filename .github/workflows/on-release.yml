@@ -9,14 +9,15 @@ jobs:
 
   test_release_refs:
     name: Print out refs
+    runs-on: ubuntu-latest
     steps:
       - name: 'Clone repository'
         uses: actions/checkout@v3
 
       - name: Test getting refs on push/merge
-          run: |
-            echo $GITHUB_REF_NAME
-            echo ${{ github.ref_name }}
-            echo ${{ github.ref }}
-            echo ${{ github.head_ref }}
-            echo ${{ github.base_ref }}
+        run: |
+          echo $GITHUB_REF_NAME
+          echo ${{ github.ref_name }}
+          echo ${{ github.ref }}
+          echo ${{ github.head_ref }}
+          echo ${{ github.base_ref }}
