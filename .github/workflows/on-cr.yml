@@ -1,19 +1,19 @@
-name: Test workflow on push/merge
+name: Test workflow on cr
 
 on:
-  push:
-    branches:
-      - main # Will run when a PR is merged or when a commit is made directly to the main branch
+  pull_request:
+    types: [ opened, synchronize ] # Whenever new changes are pushed to an existing Pull Request
+    branches: [ main ] # When a Pull Request to branch `main` is opened
 
 jobs:
-  test_push_merge_refs:
+  test_cr_refs:
     name: Print out refs
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
       
-      - name: Test getting refs on push/merge
+      - name: Test getting refs on cr
         run: |
           echo $GITHUB_REF_NAME
           echo ${{ github.ref_name }}
