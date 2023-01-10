@@ -1,20 +1,18 @@
-name: Test workflow on release
+name: '[MANUAL] Test workflow on release'
 
 on:
-  push:
-    tags:
-      - v*
+  workflow_dispatch:
 
 jobs:
 
-  test_release_refs:
+  test_manual_release_refs:
     name: Print out refs
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
 
-      - name: Test getting refs on new tag
+      - name: Test getting refs on manual release
         run: |
           echo $GITHUB_REF_NAME
           echo ${{ github.ref_name }}
