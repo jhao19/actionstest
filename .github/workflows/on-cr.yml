@@ -9,6 +9,7 @@ jobs:
   test_cr_refs:
     name: Print out refs
     runs-on: ubuntu-latest
+    timeout-minutes: ${{ vars.TIMEOUT_WORKFLOW }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
