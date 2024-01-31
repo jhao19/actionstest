@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Build docker image
 # NOTE: Must have aws cli package installed in local environment and AWS credentials configured via 'aws configure'.
@@ -12,6 +12,6 @@ set -e
 # Get the current repo
 REPO="$(get_repo_name.sh)"
 COMMIT=$(git rev-parse --short HEAD)
-VERSION=$(git_hao_version.sh)
+VERSION="$(./git_hao_version.sh)"
 
 docker build --build-arg REPO=$REPO --build-arg COMMIT=$COMMIT --build-arg VERSION=$VERSION -f dockerfile -t $REPO .

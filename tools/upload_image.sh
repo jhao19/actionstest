@@ -1,10 +1,8 @@
-#!/usr/bin/env bash
-
+#!/bin/bash
 set -e
 
 REPO="$(get_repo_name.sh)"
 COMMIT=$(git rev-parse --short HEAD)
-VERSION=$(git_hao_version.sh)
 
 ENV_CODE=$1
 
