@@ -49,3 +49,31 @@ jobs:
       - name: Deploy code to prod
         id: deploy
         run: sh ./upload_code.sh $HAO_STAGE
+
+      - name: Create pull request
+        id: cpr
+        env:
+          NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          commit-message: Update changelog for ${{ env.NEW_VERSION }}
+          base: main
+          branch: release/${{ env.NEW_VERSION }}
+          delete-branch: true
+          title: Update changelog for ${{ env.NEW_VERSION }}
+          body: This is an auto-generated pull request to deploy a production release. Will be merged automatically once the related pipeline completes successfully.
+          labels: |
+            no-ticket
+            release
+          assignees: ${{ github.actor }}
+          draft: false
+
+      - name: Merge pull request
+        id: merge-pr
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: juliangruber/merge-pull-request-action@v1.2.0
+        with:
+          github-token: ${{ steps.generate-token.outputs.token }}
+          number: ${{ steps.cpr.outputs.pull-request-number }}
+          method: squash
