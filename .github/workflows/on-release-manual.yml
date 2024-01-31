@@ -76,17 +76,17 @@ jobs:
         run: sh ./upload_code.sh $HAO_STAGE
         shell: bash
 
-      # - name: Merge pull request
-      #   id: merge-pr
-      #   if: steps.deploy.outcome == 'success'
-      #   uses: juliangruber/merge-pull-request-action@v1.2.0
-      #   with:
-      #     github-token: ${{ steps.generate-token.outputs.token }}
-      #     number: ${{ steps.cpr.outputs.pull-request-number }}
-      #     method: squash
+      - name: Merge pull request
+        id: merge-pr
+        if: steps.deploy.outcome == 'success'
+        uses: juliangruber/merge-pull-request-action@v1.2.0
+        with:
+          github-token: ${{ steps.generate-token.outputs.token }}
+          number: ${{ steps.cpr.outputs.pull-request-number }}
+          method: squash
       
-      # - name: Push git tag
-      #   if: steps.merge-pr.outcome == 'success'
-      #   env:
-      #     NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
-      #   run: git push --tags
+      - name: Push git tag
+        if: steps.merge-pr.outcome == 'success'
+        env:
+          NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
+        run: git push --tags
