@@ -89,6 +89,4 @@ jobs:
       - name: Push git tag
         id: push-tag
         if: steps.deploy.outcome == 'success'
-        env:
-          NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
         run: git push --tags
