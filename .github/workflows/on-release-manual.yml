@@ -73,17 +73,17 @@ jobs:
       - name: Merge pull request
         id: merge-pr
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash
+        run: |
+          gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash
+          git fetch --all
+          git reset --hard origin/main
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       
       - name: Deploy code to prod
         id: deploy
         if: steps.merge-pr.outcome == 'success'
-        run: |
-          git fetch --all
-          git reset --hard ${{steps.merge-pr.outputs.commit}}
-          sh ./upload_code.sh $HAO_STAGE
+        run: sh ./upload_code.sh $HAO_STAGE
       
       - name: Push git tag
         if: steps.deploy.outcome == 'success'
