@@ -14,6 +14,6 @@ REPO="$(./get_repo_name.sh)"
 COMMIT=$(git rev-parse --short HEAD)
 VERSION="$(./git_hao_version.sh)"
 
-echo $REPO $COMMIT $VERSION
+echo docker build $REPO $COMMIT $VERSION
 
 # docker build --build-arg REPO=$REPO --build-arg COMMIT=$COMMIT --build-arg VERSION=$VERSION -f dockerfile -t $REPO .
