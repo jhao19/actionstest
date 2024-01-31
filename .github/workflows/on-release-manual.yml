@@ -82,8 +82,9 @@ jobs:
       - name: Deploy code to prod
         id: deploy
         if: steps.merge-pr.outcome == 'success'
-        run: sh ./upload_code.sh $HAO_STAGE
-        shell: bash
+        run: |
+          git reset --hard ${{steps.merge-pr.outputs.commit}}
+          sh ./upload_code.sh $HAO_STAGE
       
       - name: Push git tag
         if: steps.deploy.outcome == 'success'
