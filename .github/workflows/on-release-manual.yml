@@ -81,7 +81,7 @@ jobs:
         run: |
           git checkout main
           git pull
-          create_release.sh ${{ env.NEW_VERSION }}
+          ./create_release.sh ${{ env.NEW_VERSION }}
       
       - name: Deploy code to prod
         id: deploy
