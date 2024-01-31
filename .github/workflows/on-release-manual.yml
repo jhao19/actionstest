@@ -33,6 +33,10 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
           path: .github/haoworkflows
 
+      - name: Update changelog
+        id: update-changelog
+        uses: ./.github/haoworkflows/update-changelog
+
       - name: Test getting refs on manual release
         run: |
           echo $GITHUB_REF_NAME
