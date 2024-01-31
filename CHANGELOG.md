@@ -3,6 +3,9 @@
 ## [Unreleased]
 <!-- Add your unreleased changelog entries below this line -->
 
+## [v0.0.12] - 2024-01-31
+
+
 ## [v0.0.11] - 2024-01-31
 
 
