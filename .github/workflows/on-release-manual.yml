@@ -45,11 +45,6 @@ jobs:
           git config user.name "github-actions"
           git config user.email "<>"
           git status
-      
-      - name: Deploy code to prod
-        id: deploy
-        run: sh ./upload_code.sh $HAO_STAGE
-        shell: bash
 
       - name: Create pull request
         id: cpr
@@ -78,3 +73,17 @@ jobs:
           github-token: ${{ steps.generate-token.outputs.token }}
           number: ${{ steps.cpr.outputs.pull-request-number }}
           method: squash
+      
+      - name: Add git tag
+        if: steps.merge-pr.outcome == 'success'
+        env:
+          NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
+        run: |
+          git checkout main
+          git pull
+          create_release.sh ${{ env.NEW_VERSION }}
+      
+      - name: Deploy code to prod
+        id: deploy
+        run: sh ./upload_code.sh $HAO_STAGE
+        shell: bash
