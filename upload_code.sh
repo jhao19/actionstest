@@ -4,7 +4,7 @@ echo Uploading code from git commit: $VERSION
 
 echo "$(ls)"
 
-REPO="$(get_repo_name.sh)"
+REPO="$(tools/get_repo_name.sh)"
 echo $REPO
 
 ENV_CODE=$1
