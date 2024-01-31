@@ -3,6 +3,9 @@ name: '[MANUAL] Test workflow on release'
 on:
   workflow_dispatch:
 
+env:
+  HAO_STAGE: prod
+
 jobs:
 
   test_manual_release_refs:
@@ -42,11 +45,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "<>"
           git status
-
-      - name: Test getting refs on manual release
-        run: |
-          echo $GITHUB_REF_NAME
-          echo ${{ github.ref_name }}
-          echo ${{ github.ref }}
-          echo ${{ github.head_ref }}
-          echo ${{ github.base_ref }}
+      
+      - name: Deploy code to prod
+        id: deploy
+        run: sh ./upload_code.sh $HAO_STAGE
