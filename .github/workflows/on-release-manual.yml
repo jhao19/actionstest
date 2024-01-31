@@ -69,7 +69,7 @@ jobs:
         id: merge-pr
         if: steps.cpr.outputs.pull-request-operation == 'created'
         run: |
-          gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge
+          gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash
           git fetch --all
           git reset --hard origin/main
         env:
