@@ -39,15 +39,26 @@ jobs:
       - name: Update changelog
         id: update-changelog
         uses: ./.github/haoworkflows/update-changelog
+      
+      - name: Add git tag
+        env:
+          NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
+        run: git tag -a ${{ env.NEW_VERSION }} -m \"${{ env.NEW_VERSION }}\"
 
       - name: Prepare committing the CHANGELOG
         run: |
           git config user.name "github-actions"
           git config user.email "<>"
           git status
+      
+      - name: Deploy code to prod
+        id: deploy
+        run: sh ./upload_code.sh $HAO_STAGE
+        shell: bash
 
       - name: Create pull request
         id: cpr
+        if: steps.prod-deploy.outcome == 'success'
         env:
           NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
         uses: peter-evans/create-pull-request@v5
@@ -65,26 +76,17 @@ jobs:
           assignees: ${{ github.actor }}
           draft: false
 
-      # - name: Merge pull request
-      #   id: merge-pr
-      #   if: steps.cpr.outputs.pull-request-operation == 'created'
-      #   uses: juliangruber/merge-pull-request-action@v1.2.0
-      #   with:
-      #     github-token: ${{ steps.generate-token.outputs.token }}
-      #     number: ${{ steps.cpr.outputs.pull-request-number }}
-      #     method: squash
-      
-      - name: Add git tag
+      - name: Merge pull request
+        id: merge-pr
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        # if: steps.merge-pr.outcome == 'success'
+        uses: juliangruber/merge-pull-request-action@v1.2.0
+        with:
+          github-token: ${{ steps.generate-token.outputs.token }}
+          number: ${{ steps.cpr.outputs.pull-request-number }}
+          method: squash
+      
+      - name: Push git tag
+        if: steps.merge-pr.outcome == 'success'
         env:
           NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
-        run: |
-          git checkout main
-          git pull
-          ./create_release.sh ${{ env.NEW_VERSION }}
-      
-      - name: Deploy code to prod
-        id: deploy
-        run: sh ./upload_code.sh $HAO_STAGE
-        shell: bash
+        run: git push --tags
