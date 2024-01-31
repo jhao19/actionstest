@@ -49,6 +49,7 @@ jobs:
       - name: Deploy code to prod
         id: deploy
         run: sh ./upload_code.sh $HAO_STAGE
+        shell: bash
 
       - name: Create pull request
         id: cpr
