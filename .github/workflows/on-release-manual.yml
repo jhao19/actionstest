@@ -39,17 +39,17 @@ jobs:
       - name: Update changelog
         id: update-changelog
         uses: ./.github/haoworkflows/update-changelog
-      
-      - name: Add git tag
-        env:
-          NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
-        run: git tag -a ${{ env.NEW_VERSION }} -m \"${{ env.NEW_VERSION }}\"
 
       - name: Prepare committing the CHANGELOG
         run: |
           git config user.name "github-actions"
           git config user.email "<>"
           git status
+      
+      - name: Add git tag
+        env:
+          NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
+        run: git tag -a ${{ env.NEW_VERSION }} -m \"${{ env.NEW_VERSION }}\"
       
       - name: Deploy code to prod
         id: deploy
