@@ -69,7 +69,9 @@ jobs:
         id: merge-pr
         if: steps.cpr.outputs.pull-request-operation == 'created'
         run: |
-          gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --rebase
+          gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --merge
+          git fetch --all
+          git reset --hard origin/main
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       
