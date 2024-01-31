@@ -69,24 +69,24 @@ jobs:
             release
           assignees: ${{ github.actor }}
           draft: false
-      
-      - name: Deploy code to prod
-        id: deploy
-        if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: sh ./upload_code.sh $HAO_STAGE
-        shell: bash
 
       - name: Merge pull request
         id: merge-pr
-        if: steps.deploy.outcome == 'success'
+        if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: juliangruber/merge-pull-request-action@v1.2.0
         with:
           github-token: ${{ steps.generate-token.outputs.token }}
           number: ${{ steps.cpr.outputs.pull-request-number }}
           method: squash
       
-      - name: Push git tag
+      - name: Deploy code to prod
+        id: deploy
         if: steps.merge-pr.outcome == 'success'
+        run: sh ./upload_code.sh $HAO_STAGE
+        shell: bash
+      
+      - name: Push git tag
+        if: steps.deploy.outcome == 'success'
         env:
           NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
         run: git push --tags
