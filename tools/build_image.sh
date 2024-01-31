@@ -10,7 +10,7 @@
 set -e
 
 # Get the current repo
-REPO="$(get_repo_name.sh)"
+REPO="$(./get_repo_name.sh)"
 COMMIT=$(git rev-parse --short HEAD)
 VERSION="$(./git_hao_version.sh)"
 

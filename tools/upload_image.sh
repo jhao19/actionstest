@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO="$(get_repo_name.sh)"
+REPO="$(./get_repo_name.sh)"
 COMMIT=$(git rev-parse --short HEAD)
 
 ENV_CODE=$1
