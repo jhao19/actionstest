@@ -58,7 +58,7 @@ jobs:
 
       - name: Create pull request
         id: cpr
-        if: steps.prod-deploy.outcome == 'success'
+        if: steps.deploy.outcome == 'success'
         env:
           NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
         uses: peter-evans/create-pull-request@v5
