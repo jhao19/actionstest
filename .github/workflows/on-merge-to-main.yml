@@ -12,6 +12,7 @@ jobs:
   deploy_to_stag_environment:
     name: Deploy to staging
     runs-on: ubuntu-latest
+    if: startsWith(github.event.head_commit.message, 'Update changelog for') != true
     steps:
       - name: Install Python
         uses: actions/setup-python@v5
