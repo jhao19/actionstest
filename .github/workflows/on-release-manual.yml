@@ -69,9 +69,9 @@ jobs:
         id: merge-pr
         if: steps.cpr.outputs.pull-request-operation == 'created'
         run: |
+          git branch -v
           gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash
-          git fetch --all
-          git reset --hard origin/main
+          git branch -v
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       
@@ -80,7 +80,10 @@ jobs:
         if: steps.merge-pr.outcome == 'success'
         env:
           NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
-        run: git tag -a ${{ env.NEW_VERSION }} -m \"${{ env.NEW_VERSION }}\"
+        run: |
+          git checkout main
+          git pull
+          git tag -a ${{ env.NEW_VERSION }} -m \"${{ env.NEW_VERSION }}\"
       
       - name: Deploy code to prod
         id: deploy
