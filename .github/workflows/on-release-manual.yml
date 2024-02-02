@@ -68,12 +68,9 @@ jobs:
       - name: Merge pull request
         id: merge-pr
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: |
-          git branch -v
-          gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash
-          git branch -v
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash
       
       - name: Add git tag
         id: add-tag
@@ -81,7 +78,6 @@ jobs:
         env:
           NEW_VERSION: ${{ steps.update-changelog.outputs.new-version }}
         run: |
-          git checkout main
           git pull
           git tag -a ${{ env.NEW_VERSION }} -m \"${{ env.NEW_VERSION }}\"
       
